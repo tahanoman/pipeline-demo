@@ -1,4 +1,4 @@
-# Example pipeline for building and testing a Node.js project using a self-hosted agent
+# Example pipeline for a Node.js project demo without dependencies
 trigger:
 - main
 
@@ -8,31 +8,18 @@ pool:
     - agent.name -equals TAHANOMAN
 
 steps:
+- checkout: self
+  displayName: "Checkout Repository"
+
 - script: |
-    echo "Initializing the build environment..."
+    echo "Initializing the environment..."
     node -v
     npm -v
-    echo "Environment verified successfully."
+    echo "Environment initialized successfully."
   displayName: "Verify Environment"
 
 - script: |
-    echo "Installing project dependencies..."
-    npm install
-  displayName: "Install Dependencies"
-
-- script: |
-    echo "Running tests..."
-    npm test
-  displayName: "Run Tests"
-
-- script: |
-    echo "Building the project..."
-    npm run build
-    echo "Build completed successfully."
-  displayName: "Build Project"
-
-- script: |
-    echo "Cleaning up..."
-    npm cache clean --force
-    echo "Cleanup completed successfully."
-  displayName: "Cleanup"
+    echo "Running demo tasks..."
+    echo "This is a demo pipeline with no dependencies to install."
+    echo "Pipeline executed successfully!"
+  displayName: "Run Demo Tasks"
