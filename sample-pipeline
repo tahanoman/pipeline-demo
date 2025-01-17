@@ -17,7 +17,7 @@ steps:
 
 - script: |
     echo "Installing project dependencies..."
-    npm ci
+    npm install
   displayName: "Install Dependencies"
 
 - script: |
