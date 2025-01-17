@@ -1,1 +1,21 @@
+# Example pipeline for building and testing a Node.js project
+trigger:
+- main
 
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- script: |
+    echo "Setting up the environment"
+    npm install
+  displayName: "Install Dependencies"
+
+- script: |
+    echo "Running tests"
+    npm test
+  displayName: "Run Tests"
+
+- script: |
+    echo "Build completed successfully"
+  displayName: "Build Project"
