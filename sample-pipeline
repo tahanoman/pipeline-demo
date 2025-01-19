@@ -1,22 +1,26 @@
 trigger:
-- main  # Trigger on changes to the main branch
+- main  # Trigger pipeline on pushes to the main branch
 
 pool:
   name: Default  # Use your self-hosted agent pool
   demands:
     - agent.name -equals TAHANOMAN
 
-steps:
-- script: |
-    rm -rf $(Pipeline.Workspace)/cache-folder
-    mkdir -p $(Pipeline.Workspace)/cache-folder
-    echo "Cached data" > $(Pipeline.Workspace)/cache-folder/sample.txt
-    cat $(Pipeline.Workspace)/cache-folder/sample.txt
-  displayName: 'Create and Read Cached Data'
+jobs:
+- job: Test_Matrix
+  strategy:
+    matrix:
+      Python38:
+        python.version: '3.8'
+      Python39:
+        python.version: '3.9'
+  steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '$(python.version)'
+    displayName: 'Set up Python $(python.version)'
 
-- task: Cache@2
-  inputs:
-    key: 'simple-cache | $(Pipeline.Workspace)/cache-folder/sample.txt'
-    path: $(Pipeline.Workspace)/cache-folder
-    restoreKeys: 'simple-cache'
-  displayName: 'Cache Sample Files'
+  - script: |
+      python --version
+      echo "Testing on Python $(python.version)"
+    displayName: 'Check Python Version'
