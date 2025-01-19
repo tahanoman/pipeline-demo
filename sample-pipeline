@@ -7,17 +7,16 @@ pool:
     - agent.name -equals TAHANOMAN
 
 steps:
-- checkout: self
-
-- task: Cache@2
-  inputs:
-    key: 'simple-cache | **/*.txt'
-    path: $(Pipeline.Workspace)/cache-folder
-    restoreKeys: 'simple-cache'
-  displayName: 'Cache Sample Files'
-
 - script: |
+    rm -rf $(Pipeline.Workspace)/cache-folder
     mkdir -p $(Pipeline.Workspace)/cache-folder
     echo "Cached data" > $(Pipeline.Workspace)/cache-folder/sample.txt
     cat $(Pipeline.Workspace)/cache-folder/sample.txt
   displayName: 'Create and Read Cached Data'
+
+- task: Cache@2
+  inputs:
+    key: 'simple-cache | $(Pipeline.Workspace)/cache-folder/sample.txt'
+    path: $(Pipeline.Workspace)/cache-folder
+    restoreKeys: 'simple-cache'
+  displayName: 'Cache Sample Files'
