@@ -1,5 +1,5 @@
 trigger:
-- main  # Trigger pipeline on pushes to the main branch
+- main  # Trigger pipeline on changes to the main branch
 
 pool:
   name: Default  # Use your self-hosted agent pool
@@ -15,6 +15,10 @@ jobs:
       Python39:
         python.version: '3.9'
   steps:
+  - script: |
+      Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
+    displayName: 'Set PowerShell Execution Policy to Bypass'
+
   - task: UsePythonVersion@0
     inputs:
       versionSpec: '$(python.version)'
@@ -22,5 +26,5 @@ jobs:
 
   - script: |
       python --version
-      echo "Testing on Python $(python.version)"
-    displayName: 'Check Python Version'
+      echo "Running tests with Python $(python.version)"
+    displayName: 'Check Python Version and Run Tests'
