@@ -15,8 +15,12 @@ jobs:
       Python39:
         python.version: '3.9'
   steps:
-  - script: |
-      Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
+  - task: PowerShell@2
+    inputs:
+      targetType: 'inline'
+      script: |
+        Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
+      pwsh: false  # Use Windows PowerShell
     displayName: 'Set PowerShell Execution Policy to Bypass'
 
   - task: UsePythonVersion@0
@@ -26,5 +30,5 @@ jobs:
 
   - script: |
       python --version
-      echo "Running tests with Python $(python.version)"
-    displayName: 'Check Python Version and Run Tests'
+      echo "Running tests on Python $(python.version)"
+    displayName: 'Check Python Version'
