@@ -1,5 +1,3 @@
-# Demo Script: Using Azure Key Vault Secrets in Azure Pipelines
-
 trigger:
 - main  # Trigger on changes to the main branch
 
@@ -12,7 +10,20 @@ variables:
 - group: Demo-variable-group  # Reference the variable group linked to Azure Key Vault
 
 steps:
+- task: Cache@2
+  inputs:
+    key: 'npm | package-lock.json'
+    path: '$(NPM_CACHE_FOLDER)'
+    restoreKeys: 'npm'
+  displayName: "Cache npm dependencies"
+
 - script: |
     echo "Retrieving secret from Azure Key Vault..."
     echo "The secret value is: $(MySecretKey)"
   displayName: "Access Key Vault Secret"
+
+- script: npm install
+  displayName: "Install Dependencies"
+
+- script: npm test
+  displayName: "Run Tests"
