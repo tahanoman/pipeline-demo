@@ -6,24 +6,18 @@ pool:
   demands:
     - agent.name -equals TAHANOMAN
 
-variables:
-- group: Demo-variable-group  # Reference the variable group linked to Azure Key Vault
-
 steps:
+- checkout: self
+
 - task: Cache@2
   inputs:
-    key: 'npm | package-lock.json'
-    path: '$(NPM_CACHE_FOLDER)'
-    restoreKeys: 'npm'
-  displayName: "Cache npm dependencies"
+    key: 'simple-cache | **/*.txt'
+    path: $(Pipeline.Workspace)/cache-folder
+    restoreKeys: 'simple-cache'
+  displayName: 'Cache Sample Files'
 
 - script: |
-    echo "Retrieving secret from Azure Key Vault..."
-    echo "The secret value is: $(MySecretKey)"
-  displayName: "Access Key Vault Secret"
-
-- script: npm install
-  displayName: "Install Dependencies"
-
-- script: npm test
-  displayName: "Run Tests"
+    mkdir -p $(Pipeline.Workspace)/cache-folder
+    echo "Cached data" > $(Pipeline.Workspace)/cache-folder/sample.txt
+    cat $(Pipeline.Workspace)/cache-folder/sample.txt
+  displayName: 'Create and Read Cached Data'
