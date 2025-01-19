@@ -1,25 +1,18 @@
-# Example pipeline for a Node.js project demo without dependencies
+# Demo Script: Using Azure Key Vault Secrets in Azure Pipelines
+
 trigger:
-- main
+- main  # Trigger on changes to the main branch
 
 pool:
-  name: Default
+  name: Default  # Use your self-hosted agent pool
   demands:
     - agent.name -equals TAHANOMAN
 
+variables:
+- group: Demo-variable-group  # Reference the variable group linked to Azure Key Vault
+
 steps:
-- checkout: self
-  displayName: "Checkout Repository"
-
 - script: |
-    echo "Initializing the environment..."
-    node -v
-    npm -v
-    echo "Environment initialized successfully."
-  displayName: "Verify Environment"
-
-- script: |
-    echo "Running demo tasks..."
-    echo "This is a demo pipeline with no dependencies to install."
-    echo "Pipeline executed successfully!"
-  displayName: "Run Demo Tasks"
+    echo "Retrieving secret from Azure Key Vault..."
+    echo "The secret value is: $(MySecretKey)"
+  displayName: "Access Key Vault Secret"
