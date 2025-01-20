@@ -1,1 +1,27 @@
 
+parameters:
+  - name: buildConfiguration
+    type: string
+    default: 'Release'
+
+jobs:
+  - job: Build
+    steps:
+      - script: |
+          echo "Starting the build process..."
+          echo "Building project in ${{ parameters.buildConfiguration }} mode"
+          # Simulate build process
+          echo "dotnet build --configuration ${{ parameters.buildConfiguration }}"
+        displayName: "Build Project"
+
+      - script: |
+          echo "Running tests..."
+          # Simulate test execution
+          echo "dotnet test"
+        displayName: "Run Tests"
+
+      - script: |
+          echo "Packaging the project..."
+          # Simulate packaging
+          echo "dotnet publish -c ${{ parameters.buildConfiguration }}"
+        displayName: "Package Application"
