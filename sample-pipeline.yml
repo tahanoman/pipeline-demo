@@ -1,0 +1,14 @@
+trigger:
+- main  # Trigger pipeline on changes to the main branch
+
+pool:
+  name: Default  # Use your self-hosted agent pool
+  demands:
+    - agent.name -equals TAHANOMAN
+
+stages:
+  - stage: BuildStage
+    jobs:
+      - template: build-template.yml  # Reference the reusable template
+        parameters:
+          buildConfiguration: 'Debug'
